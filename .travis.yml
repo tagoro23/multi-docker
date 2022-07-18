@@ -6,20 +6,19 @@ services:
 
 before_install:
   - docker build -t tagoro/react-test -f ./client/Dockerfile.dev ./client
-  
 
 script:
-  - docker run -e CI=true tagoro/react-test npm test 
+  - docker run -e CI=true tagoro/react-test npm test
 
-  after_success:
-    - docker build -t tagoro/multi-client ./client
-    - docker build -t tagoro/multi-nginx ./nginx
-    - docker build -t tagoro/multi-server ./server
-    - docker build -t tagoro/multi-worker ./worker
-    # Log in to docker CLI
-    - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
-    # Push images to docker hub
-    - docker push tagoro/multi-client
-    - docker push tagoro/multi-nginx
-    - docker push tagoro/multi-server
-    - docker push tagoro/multi-worker
+after_success:
+  - docker build -t tagoro/multi-client ./client
+  - docker build -t tagoro/multi-nginx ./nginx
+  - docker build -t tagoro/multi-server ./server
+  - docker build -t tagoro/multi-worker ./worker
+  # Log in to docker CLI
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  # Push images to docker hub
+  - docker push tagoro/multi-client
+  - docker push tagoro/multi-nginx
+  - docker push tagoro/multi-server
+  - docker push tagoro/multi-worker
